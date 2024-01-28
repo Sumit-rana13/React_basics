@@ -4,18 +4,27 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  let [counter,setCounter] = useState(15)
+  let [counter,setCounter] = useState(10)
 
   // let counter = 10;
 
   const addValue = ()=>{
     console.log("clicked" , counter);
     // counter = counter + 1;
-    setCounter(counter+1);
+    if(counter <= 19){
+      setCounter(counter+1);
+    }
+    else{
+      console.log("you reached max limit");
+    }
+    
   }
 
   const subValue =()=>{
-   setCounter(counter-1)
+   
+   if(counter >= 1){
+    setCounter(counter-1);
+   }
     
   }
 
