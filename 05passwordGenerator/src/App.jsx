@@ -1,28 +1,30 @@
 import { useCallback, useEffect, useState, useRef } from "react"
 
 function App() {
-  const [length , setLength] = useState("6");
-  const [numAllowed, setNumAllowed] = useState("false");
-  const [charAllowed, setCharAllowed] = useState("false")
-  const [password , setPassword] =useState("")
+  const [length , setLength] = useState("8");
+  const [numAllowed, setNumAllowed] = useState(true);
+  const [charAllowed, setCharAllowed] = useState(true);
+  const [useUpperCase , setUseUpperCase] = useState(true);
+  const [useLowerCase, setUseLowerCase] = useState(true)
+  const [password , setPassword] = useState("");
 
   // useRef hook
   const passwordRef = useRef(null)
 
   const passwordGenerator = useCallback(()=>{
-    let pass=""
-    
-    let str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    let newPassword="";
+    let str="";
 
-    if(numAllowed) str+= "0123456789"
-    if(charAllowed) str+="!#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+    if (numAllowed) str += "0123456789";
+    if (charAllowed) str +="!@#$%^&*()";
+    if (useLowerCase) str += "abcdefghijklmnopqrstuvwxyz";
+    if (useUpperCase) str += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     for (let i = 1; i <= length; i++) {
-    let char = Math.floor(Math.random() * str.length + 1)
-    pass += str.charAt(char)
+      newPassword += str.charAt(Math.floor(Math.random() * str.length + 1));
     }
    
-    setPassword(pass)
+    setPassword(newPassword)
 
   },[length,numAllowed,charAllowed,setPassword])
 
@@ -40,13 +42,13 @@ function App() {
 
   return (
     <>
-    <div className="border-2 border-red-500 w-[80%] bg-slate-800 mx-auto mt-6 rounded-lg">
-      <h2 className="text-white text-2xl py-4 text-center">Password Generator</h2>
-      <div className="flex justify-center m-3 overflow-hidden rounded-2xl">
+    <div className=" w-[70%] bg-[url('https://img.freepik.com/free-photo/blue-smooth-wall-textured-background_53876-106133.jpg?w=996&t=st=1706892291~exp=1706892891~hmac=b3313fac4fd8f149a5c35ad2a67657f4452c187cf72ad2009da32acf1161f0e6')] mx-auto mt-[20%] rounded-xl">
+      <h2 className="text-white text-3xl font-semibold py-4 text-center">Random Password Generator</h2>
+      <div className="flex justify-center mx-8 overflow-hidden rounded-2xl">
         <input type="text"
           placeholder="password"
           value={password}
-          className="outline-none w-full py-1 px-3 "
+          className="outline-none w-full py-2 px-3 "
           readOnly
           ref={passwordRef}
         />
@@ -54,24 +56,24 @@ function App() {
         onClick={()=>{
           copyPasswordToClipboard()
         }}
-        className="bg-blue-700 text-white px-4 text-lg">copy</button>
+        className="bg-blue-700 text-white px-5 text-xl">copy</button>
       </div>
 
-      <div className="m-3 text-white flex gap-x-2">
-        <div className="flex items-center gap-x-2">
+      <div className="text-white ml-10 py-3 flex justify-center gap-6 text-xl">
           <input type="range"  
-            min={6}
-            max={100}
+            min={8}
+            max={32}
             // value={length}
             className="cursor-pointer"
-            onClick={(e)=>{setLength(e.target.value)}}
+            onClick={(e)=>setLength(e.target.value)}
           />
           <label>Length: {length}</label>         
-        </div>
+      </div>
 
-        <div className="flex items-center gap-x-2 ">
+      <div className="text-white p-3 ml-3 flex flex-wrap justify-center gap-x-3 text-xl ">       
+        <div className="flex items-center">
           <input type="checkbox" 
-            defaultChecked = {numAllowed}
+            checked = {numAllowed}
             id="numberInput"
             onChange={()=>{
               setNumAllowed((prev)=>{!prev})
@@ -80,16 +82,36 @@ function App() {
         </div>
         <label htmlFor="numberInput">Number</label>
 
-        <div className="flex items-center gap-x-2 ">
+        <div className="flex items-center">
           <input type="checkbox"
             defaultChecked = {charAllowed}
-            id="characterInput"
+            // id="characterInput"
             onChange={()=>{
               setCharAllowed((prev)=>{!prev})
             }}
            />
         </div>
         <label >Character</label>
+
+        <div className="flex items-center">
+          <input type="checkbox"
+            defaultChecked = {useUpperCase}            
+            onChange={()=>{
+              setUseUpperCase((prev)=>{!prev})
+            }}
+           />
+        </div>
+        <label >UpperCase</label>
+
+        <div className="flex items-center">
+          <input type="checkbox"
+            defaultChecked = {useLowerCase}
+            onChange={()=>{
+              setUseLowerCase((prev)=>{!prev})
+            }}
+           />
+        </div>
+        <label >LowerCase</label>
       </div>
 
     </div>
