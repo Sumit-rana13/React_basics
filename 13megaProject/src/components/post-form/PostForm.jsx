@@ -21,13 +21,13 @@ function PostForm({post}) {
 
     const submit = async(data) =>{
         if(post){
-            const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null;
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
 
             if(file){
                 appwriteService.deleteFile(post.featureImage)
             }
             const dbPost = await appwriteService.updatePost(post.$id, {...data,
-                featureImage: file ? file.$id : null,
+                featureImage: file ? file.$id : undefined,
             });
 
             if(dbPost){
@@ -102,7 +102,7 @@ function PostForm({post}) {
                     type="file"
                     className="mb-4"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
+                    {...register("image", { required: post })}
                 />
                 {post && (
                     <div className="w-full mb-4">

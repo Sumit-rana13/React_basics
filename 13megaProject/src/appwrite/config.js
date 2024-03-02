@@ -15,7 +15,7 @@ export class Service {
 
     }
 
-    async createPost({title, slug, content, featureImage, status, userId}){
+    async createPost({title, slug, content, featureImage, status}){
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -26,7 +26,7 @@ export class Service {
                     content,
                     featureImage,
                     status,
-                    userId
+                    
                 }
             )
         } catch (error) {
@@ -80,7 +80,7 @@ export class Service {
         }
     }
 
-    async getPosts(queries = [Query.equal("status", "active")]){
+    async getPosts(queries = [Query.equal("status", ["active"])]){
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
