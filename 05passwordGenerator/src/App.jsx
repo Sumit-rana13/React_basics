@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState, useRef } from "react"
 
 function App() {
-  const [length , setLength] = useState("8");
-  const [numAllowed, setNumAllowed] = useState(true);
-  const [charAllowed, setCharAllowed] = useState(true);
-  const [useUpperCase , setUseUpperCase] = useState(true);
+  const [length , setLength] = useState(6);
+  const [numAllowed, setNumAllowed] = useState(false);
+  const [charAllowed, setCharAllowed] = useState(false);
+  const [useUpperCase , setUseUpperCase] = useState(false);
   const [useLowerCase, setUseLowerCase] = useState(true)
   const [password , setPassword] = useState("");
 
@@ -35,7 +35,7 @@ function App() {
 
   useEffect(()=>{
     passwordGenerator()
-  },[length,numAllowed,charAllowed,passwordGenerator])
+  },[length,numAllowed,charAllowed,useUpperCase,useLowerCase, passwordGenerator])
 
 
 
@@ -60,12 +60,13 @@ function App() {
       </div>
 
       <div className="text-white ml-10 py-3 flex justify-center gap-6 text-xl">
-          <input type="range"  
-            min={8}
+          <input 
+            type="range"  
+            min={6}
             max={32}
-            // value={length}
+            value={length}
             className="cursor-pointer"
-            onClick={(e)=>setLength(e.target.value)}
+            onChange={(e)=>{setLength(e.target.value)}}
           />
           <label>Length: {length}</label>         
       </div>
@@ -76,7 +77,7 @@ function App() {
             checked = {numAllowed}
             id="numberInput"
             onChange={()=>{
-              setNumAllowed((prev)=>{!prev})
+              setNumAllowed((prev)=>!prev);
             }}
           />
         </div>
@@ -84,10 +85,10 @@ function App() {
 
         <div className="flex items-center">
           <input type="checkbox"
-            defaultChecked = {charAllowed}
-            // id="characterInput"
+            checked = {charAllowed}
+            id="characterInput"
             onChange={()=>{
-              setCharAllowed((prev)=>{!prev})
+              setCharAllowed((prev)=> !prev)
             }}
            />
         </div>
@@ -95,9 +96,9 @@ function App() {
 
         <div className="flex items-center">
           <input type="checkbox"
-            defaultChecked = {useUpperCase}            
+            checked = {useUpperCase}           
             onChange={()=>{
-              setUseUpperCase((prev)=>{!prev})
+              setUseUpperCase((prev)=> !prev)
             }}
            />
         </div>
@@ -107,7 +108,7 @@ function App() {
           <input type="checkbox"
             defaultChecked = {useLowerCase}
             onChange={()=>{
-              setUseLowerCase((prev)=>{!prev})
+              setUseLowerCase((prev)=> !prev)
             }}
            />
         </div>
